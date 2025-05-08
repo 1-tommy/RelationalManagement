@@ -10,6 +10,7 @@ import com.example.model.entity.Person;
 import com.example.repository.PersonRepository;
 import com.example.service.PersonService;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,13 @@ public class PersonServiceimpl implements PersonService {
 
 
 
-    @Cacheable(value = PERSON_CACHE , key = "#result.id()")
+    @CachePut(value = PERSON_CACHE, key = "#result.id")
     public PersonDto createPerson(PersonDto personDto) {
         Person entity = personMapper.toEntity(personDto);
-        personRepository.save(entity);
-        return personMapper.toDto(entity);
+        Person saved = personRepository.save(entity);
+        return personMapper.toDto(saved);
     }
+
 
     @Cacheable(value = PERSON_CACHE, key ="#id")
     public PersonDto getById(Long id) {
@@ -52,12 +54,14 @@ public class PersonServiceimpl implements PersonService {
 
 
 
-    @Cacheable(value = PERSON_CACHE, key ="'all'")
+    @Cacheable(value = PERSON_CACHE, key = "'all'")
     public List<PersonDto> getAll() {
         List<Person> all = personRepository.findAll();
-        Person person = new Person();
-        return (List<PersonDto>) personMapper.toDto(person);
+        return all.stream()
+                .map(personMapper::toDto)
+                .toList();
     }
+
 
     @Cacheable(value = PERSON_CACHE, key ="#result.getId()")
     public String updatePerson(PersonDto personDto) {

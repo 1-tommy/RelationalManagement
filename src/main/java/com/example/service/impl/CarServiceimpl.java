@@ -46,11 +46,12 @@ public class CarServiceimpl implements CarService {
 
 
 
-    @Cacheable(value = CAR_CACHE, key ="'all'")
-    public List<CarDto> getAll() {
+    @Cacheable(value = CAR_CACHE, key = "'all'")
+    public List<Car> getAll() {
         List<Car> all = carRepository.findAll();
-        Car car = new Car();
-        return (List<CarDto>) carMapper.toDto(car);
+        return all.stream()
+                .map(carMapper::toDto)
+                .toList();
     }
 
     @Cacheable(value = CAR_CACHE, key ="#result.getId()")

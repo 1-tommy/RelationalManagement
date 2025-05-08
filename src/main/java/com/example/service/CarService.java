@@ -10,7 +10,7 @@ import java.util.List;
 public interface CarService {
     Car createCar(Car car); // можно также использовать CarDto если хочешь DTO на вход
     Car getById(Long id);
-    List<CarDto> getAll();
+    List<Car> getAll();
     String updateCar(CarDto carDto);
     String deleteCar(Long id);
 }

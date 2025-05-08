@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.model.dto.CarDto;
 import com.example.model.entity.Car;
 import com.example.service.impl.CarServiceimpl;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,7 +24,7 @@ public class CarController {
 
     @GetMapping
     @Cacheable(value = "#id")
-    public List<CarDto> getAllCars() {
+    public List<Car> getAllCars() {
         return carService.getAll();
     }
 
