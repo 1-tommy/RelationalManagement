@@ -61,6 +61,7 @@ public class CarServiceimpl implements CarService {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new CarNotFoundException("car not exist " + id));
 
+        System.out.println("hello");
 
         carMapper.mapDtoToEntity(carDto, car);
         carMapper.toDto(carRepository.save(car));
